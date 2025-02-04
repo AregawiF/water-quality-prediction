@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 # Load dataset
@@ -17,6 +16,63 @@ def sigmoid(x):
 def compute_residuals(y_true, y_pred_log_odds):
     y_pred_prob = sigmoid(y_pred_log_odds)
     return y_true - y_pred_prob
+
+# class for the Decision tree regressor
+class DecisionTreeRegressor:
+    def __init__(self, max_depth=3):
+        self.max_depth = max_depth
+        self.tree = None
+    
+    def fit(self, X, y):
+        self.tree = self._build_tree(X, y, depth=0)
+    
+    def _build_tree(self, X, y, depth):
+        if depth >= self.max_depth or len(np.unique(y)) == 1:
+            return np.mean(y)
+        
+        best_feature, best_threshold = self._find_best_split(X, y)
+        if best_feature is None:
+            return np.mean(y)
+        
+        left_indices = X[:, best_feature] <= best_threshold
+        right_indices = ~left_indices
+        
+        left_subtree = self._build_tree(X[left_indices], y[left_indices], depth + 1)
+        right_subtree = self._build_tree(X[right_indices], y[right_indices], depth + 1)
+        
+        return (best_feature, best_threshold, left_subtree, right_subtree)
+    
+    def _find_best_split(self, X, y):
+        best_feature, best_threshold, best_mse = None, None, float('inf')
+        for feature in range(X.shape[1]):
+            thresholds = np.unique(X[:, feature])
+            for threshold in thresholds:
+                left_y = y[X[:, feature] <= threshold]
+                right_y = y[X[:, feature] > threshold]
+                
+                if len(left_y) == 0 or len(right_y) == 0:
+                    continue
+                
+                mse = (np.var(left_y) * len(left_y) + np.var(right_y) * len(right_y)) / len(y)
+                
+                if mse < best_mse:
+                    best_feature, best_threshold, best_mse = feature, threshold, mse
+        
+        return best_feature, best_threshold
+    
+    def predict(self, X):
+        return np.array([self._predict_single(x, self.tree) for x in X])
+    
+    def _predict_single(self, x, node):
+        if not isinstance(node, tuple):
+            return node
+        feature, threshold, left_subtree, right_subtree = node
+        if x[feature] <= threshold:
+            return self._predict_single(x, left_subtree)
+        else:
+            return self._predict_single(x, right_subtree)
+
+
 
 # Gradient Boosting Classifier
 class SimpleGradientBoostingClassifier:
