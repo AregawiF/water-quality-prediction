@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 # Load dataset
-df = pd.read_csv('src/cleaned_data/cleaned_data.csv')
+df = pd.read_csv('../../src/cleaned_data/cleaned_data.csv')
 
 # Helper functions
 def sigmoid(x):
@@ -133,13 +133,13 @@ if st.button("Predict Water Quality"):
     class_label = "Safe" if prediction[0] == 1 else "Unsafe"
     st.subheader(f"Prediction: {class_label}")
 
-# Evaluate on test set
-y_pred = gb.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-conf_matrix = confusion_matrix(y_test, y_pred)
+# # Evaluate on test set
+# y_pred = gb.predict(X_test)
+# accuracy = accuracy_score(y_test, y_pred)
+# conf_matrix = confusion_matrix(y_test, y_pred)
 
-st.write(f"### Model Accuracy: {accuracy*100:.2f}%")
-st.write("### Confusion Matrix")
-fig, ax = plt.subplots()
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
-st.pyplot(fig)
+# st.write(f"### Model Accuracy: {accuracy*100:.2f}%")
+# st.write("### Confusion Matrix")
+# fig, ax = plt.subplots()
+# sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
+# st.pyplot(fig)

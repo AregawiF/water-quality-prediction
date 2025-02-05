@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
 # Load dataset
-data = pd.read_csv('src/cleaned_data/cleaned_data.csv')
+data = pd.read_csv('../../src/cleaned_data/cleaned_data.csv')
 
 # Features and labels
 X = data.drop('Label', axis=1).values
@@ -89,9 +89,3 @@ if st.button("Predict Water Quality"):
     class_label = "Safe" if prediction[0] == 1 else "Unsafe"
     st.subheader(f"Prediction: {class_label}")
 
-# Display model accuracy and confusion matrix
-st.write(f"### Model Accuracy: {accuracy * 100:.2f}%")
-st.write("### Confusion Matrix")
-fig, ax = plt.subplots()
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
-st.pyplot(fig)

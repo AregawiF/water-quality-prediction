@@ -67,14 +67,3 @@ if st.button("Predict Water Quality"):
     class_label = "Safe" if prediction[0] == 1 else "Unsafe"
     st.subheader(f"Prediction: {class_label}")
 
-# Display model accuracy
-st.write(f"### Model Accuracy: {accuracy * 100:.2f}%")
-
-# Display confusion matrix
-st.write("### Confusion Matrix")
-fig, ax = plt.subplots()
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', ax=ax)
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix')
-st.pyplot(fig)
