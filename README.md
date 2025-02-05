@@ -18,7 +18,7 @@ We implemented six models:
 
 ### **1️⃣ Clone the Repository**
 ```bash
-git clone [https://github.com/your-username/water-quality-prediction.git](https://github.com/AregawiF/water-quality-prediction.git)
+git clone https://github.com/your-username/water-quality-prediction.git
 cd water-quality-prediction
 ```
 
